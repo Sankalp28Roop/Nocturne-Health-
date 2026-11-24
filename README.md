@@ -1,5 +1,16 @@
 # Nocturne — Obsidian Kinetic Health & Fitness
 
+<div align="center">
+
+[![CI Build & Typecheck](https://github.com/Sankalp28Roop/Nocturne-Health-/actions/workflows/ci.yml/badge.svg)](https://github.com/Sankalp28Roop/Nocturne-Health-/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-61dafb?logo=react)](https://react.dev/)
+[![Capacitor](https://img.shields.io/badge/Capacitor-Android-119EFF?logo=capacitor)](https://capacitorjs.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-Obsidian_Kinetic-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
+
+</div>
+
 Nocturne is an advanced, offline-first health, biometric, and endurance tracking application designed with an **Obsidian Kinetic** aesthetic (deep obsidian canvas `#0c0f0e`, crisp white typography, and vibrant energetic light green `#6bfb9a` accents).
 
 It delivers comprehensive biometric telemetry, live GPS workout tracking with route privacy protection, multimodal AI meal scanning, stress-reduction breathwork, and clinical report exports—backed by a zero-fake-data guarantee.
