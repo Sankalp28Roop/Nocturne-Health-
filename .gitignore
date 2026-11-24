@@ -1,0 +1,86 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Environment & Secrets (NEVER COMMIT)
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# Local SQLite & Databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Logs & Debugging
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build Outputs & Bundles
+dist/
+dist-ssr/
+build/
+.vite/
+.output/
+coverage/
+
+# OS Junk & Metadata
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE & Editor Directories
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Android Studio & Gradle Artifacts
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# iOS & CocoaPods Artifacts
+ios/App/Pods/
+ios/App/build/
+ios/App/Podfile.lock
+DerivedData/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+
+# Capacitor Sync Temporary Files
+capacitor.build.gradle
+
+# Raw design export directory (keeping DESIGN_ANALYSIS.md and Logo,.png)
+stitch_lumina_health_fitness_tracker/*
+!stitch_lumina_health_fitness_tracker/DESIGN_ANALYSIS.md
+!stitch_lumina_health_fitness_tracker/Logo,.png

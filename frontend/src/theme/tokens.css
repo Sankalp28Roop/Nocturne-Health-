@@ -1,0 +1,113 @@
+:root {
+  --color-canvas: #0c0f0e;
+  --color-surface: #111413;
+  --color-surface-card: #1d201f;
+  --color-surface-low: #191c1b;
+  --color-surface-high: #282b29;
+  --color-primary: #6bfb9a;
+  --color-primary-container: #4ade80;
+  --color-secondary-light: #86efac;
+  --color-text-main: #e1e3e1;
+  --color-text-secondary: #bccabb;
+  --color-border-hairline: rgba(255, 255, 255, 0.08);
+}
+
+/* Tabular Numerics for counters, metrics, and timers to avoid layout jump */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Mobile Safe Areas */
+.safe-top {
+  padding-top: max(env(safe-area-inset-top, 0px), 16px);
+}
+
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+}
+
+.safe-nav-space {
+  padding-bottom: calc(max(env(safe-area-inset-bottom, 0px), 16px) + 84px);
+}
+
+/* Glass Card */
+.glass-card {
+  background: linear-gradient(145deg, #141a18 0%, #1c2420 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-modal {
+  background: rgba(25, 28, 27, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.floating-nav {
+  background: rgba(12, 15, 14, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Skeleton Shimmer Pulse */
+@keyframes skeleton-shimmer {
+  0% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0.35;
+  }
+}
+
+.skeleton-shimmer {
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.04) 100%);
+  background-size: 200% 100%;
+}
+
+/* Equalizer Bars Animation */
+@keyframes soundwave-1 {
+  0%, 100% { height: 4px; }
+  50% { height: 14px; }
+}
+
+@keyframes soundwave-2 {
+  0%, 100% { height: 12px; }
+  50% { height: 6px; }
+}
+
+@keyframes soundwave-3 {
+  0%, 100% { height: 6px; }
+  50% { height: 16px; }
+}
+
+.equalizer-bar-1 {
+  animation: soundwave-1 0.7s ease-in-out infinite;
+}
+
+.equalizer-bar-2 {
+  animation: soundwave-2 0.85s ease-in-out infinite;
+}
+
+.equalizer-bar-3 {
+  animation: soundwave-3 0.65s ease-in-out infinite;
+}
+
+/* Ambient Zone Glow Transitions */
+.zone-ambient-fatburn {
+  box-shadow: inset 0 0 80px rgba(74, 222, 128, 0.15);
+}
+
+.zone-ambient-aerobic {
+  box-shadow: inset 0 0 90px rgba(56, 189, 248, 0.18);
+}
+
+.zone-ambient-peak {
+  box-shadow: inset 0 0 100px rgba(248, 113, 113, 0.22);
+}
+

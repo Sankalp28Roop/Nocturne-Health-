@@ -1,0 +1,260 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id               String   @id @default(cuid())
+  email            String   @unique
+  passwordHash     String
+  displayName      String
+  membershipTier   String   @default("Free")
+  level            Int      @default(1)
+  gender           String?
+  birthDate        DateTime?
+  age              Int?
+  heightCm         Float?
+  weightKg         Float?
+  streakDays       Int      @default(0)
+  totalWorkouts    Int      @default(0)
+  totalActiveHours Float    @default(0.0)
+  
+  // Goals (null until user explicitly sets them)
+  goalActiveMinutes Int?
+  goalSteps         Int?
+  goalCalories      Int?
+  goalWeightKg      Float?
+  targetSleepHours  Float?
+  windDownTime      String?
+  
+  // Units & Settings
+  unitWeight        String   @default("kg")
+  unitHeight        String   @default("cm")
+  unitDistance      String   @default("km")
+  unitTemperature   String   @default("celsius")
+  
+  // Integrations & Consent
+  healthConnectSync     Boolean  @default(false)
+  aiHealthContextConsent Boolean  @default(true)
+  lastSyncedAt          DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relationships
+  biometricsLogs    BiometricsLog[]
+  hydrationLogs     HydrationLog[]
+  sleepRecords      SleepRecord[]
+  cardioCalibration CardioCalibration?
+  workoutConfigs    WorkoutConfig?
+  workoutSessions   WorkoutSession[]
+  challengeLogs     UserChallengeProgress[]
+  rivalries         Rivalry[]
+  aiChatMessages    AiChatMessage[]
+  refreshTokens     RefreshToken[]
+  mealLogs          MealLog[]
+  breathingSessions BreathingSession[]
+}
+
+model BiometricsLog {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recordedAt        DateTime @default(now())
+  weightKg          Float
+  heightCm          Float?
+  bmi               Float?
+  isFasting         Boolean  @default(false)
+  notes             String?
+  deltaVsLastWeekKg Float?
+  createdAt         DateTime @default(now())
+}
+
+model HydrationLog {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recordedAt DateTime @default(now())
+  amountMl   Int
+  createdAt  DateTime @default(now())
+}
+
+model SleepRecord {
+  id                   String   @id @default(cuid())
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date                 String   // YYYY-MM-DD
+  sleepScore           Int?
+  readinessScore       Int?
+  readinessMessage     String?
+  durationMinutes      Int
+  efficiencyPercentage Int?
+  onsetLatencyMinutes  Int?
+  deepMinutes          Int?
+  remMinutes           Int?
+  lightMinutes         Int?
+  awakeMinutes         Int?
+  notes                String?
+  mood                 String?
+  hypnogramJson        String?  // JSON string of real sleep stages or null
+  createdAt            DateTime @default(now())
+
+  @@unique([userId, date])
+}
+
+model CardioCalibration {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  age          Int
+  restingHr    Int
+  maxHr        Int
+  method       String   // tanaka, gulati, custom
+  vo2Max       Float?
+  vo2MaxTier   String?
+  vo2MaxRank   String?
+  fitnessAge   Int?
+  nightlyHrvMs Int?
+  
+  // Stored zone bounds (Bpm)
+  z1Min        Int
+  z1Max        Int
+  z2Min        Int
+  z2Max        Int
+  z3Min        Int
+  z3Max        Int
+  z4Min        Int
+  z4Max        Int
+  z5Min        Int
+  z5Max        Int
+  
+  updatedAt    DateTime @updatedAt
+}
+
+model WorkoutConfig {
+  id                   String   @id @default(cuid())
+  userId               String   @unique
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  selectedActivity     String   @default("running")
+  goalType             String   @default("open") // open, distance, duration, calories, steps
+  goalValue            Float?
+  goalUnit             String?
+  voiceCoachEnabled    Boolean  @default(false)
+  distanceReminderKm   Float?
+  durationReminderMin  Int?
+  hrZoneAlertThreshold Int?
+  autoPauseEnabled     Boolean  @default(false)
+  updatedAt            DateTime @updatedAt
+}
+
+model WorkoutSession {
+  id                  String   @id @default(cuid())
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activityType        String
+  status              String   @default("active") // active, completed, discarded
+  startedAt           DateTime @default(now())
+  endedAt             DateTime?
+  elapsedSeconds      Int      @default(0)
+  distanceMeters      Float    @default(0.0)
+  currentPaceSecPerKm Int?
+  averagePaceSecPerKm Int?
+  heartRateBpm        Int?
+  activeCalories      Int      @default(0)
+  cadenceSpm          Int?
+  elevationGainMeters Float?
+  routeName           String?
+  telemetryPointsJson String?
+  trimStartMeters     Int      @default(0)
+  trimEndMeters       Int      @default(0)
+  customStartLabel    String?
+  customEndLabel      String?
+  createdAt           DateTime @default(now())
+}
+
+model CommunityChallenge {
+  id                String   @id @default(cuid())
+  title             String
+  description       String
+  activityType      String
+  targetValue       Float
+  targetUnit        String
+  daysRemaining     Int
+  totalParticipants Int      @default(0)
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+
+  participants      UserChallengeProgress[]
+}
+
+model UserChallengeProgress {
+  id             String             @id @default(cuid())
+  userId         String
+  user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challengeId    String
+  challenge      CommunityChallenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  completedValue Float              @default(0.0)
+  updatedAt      DateTime           @updatedAt
+
+  @@unique([userId, challengeId])
+}
+
+model Rivalry {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String
+  opponentName  String
+  userScore     Int      @default(0)
+  opponentScore Int      @default(0)
+  unit          String
+  endsAt        String
+  cheersCount   Int      @default(0)
+  createdAt     DateTime @default(now())
+}
+
+model AiChatMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String   // "user" or "model"
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  revoked   Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model MealLog {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  description  String
+  mealType     String   // breakfast | lunch | dinner | snack
+  caloriesKcal Int
+  proteinG     Float    @default(0.0)
+  carbsG       Float    @default(0.0)
+  fatsG        Float    @default(0.0)
+  imageUrl     String?
+  loggedAt     DateTime @default(now())
+  createdAt    DateTime @default(now())
+}
+
+model BreathingSession {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  protocol    String   @default("box_4_4_4_4")
+  durationSec Int      @default(120)
+  completedAt DateTime @default(now())
+}
